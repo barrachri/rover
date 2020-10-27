@@ -2,9 +2,10 @@ from typing import Tuple
 from uuid import uuid4
 
 positionType = Tuple[int, int, str]
-
+positionTypeResponse = Tuple[Tuple[int, int], str]
 
 DIRECTIONS = ("NORTH", "EAST", "SOUTH", "WEST")
+
 
 class Rover:
     """A rover power by AI and solar cells.
@@ -21,11 +22,19 @@ class Rover:
     """
 
     def __init__(self, position: positionType, name: str = None) -> None:
-      x, y, direction = position
+        x, y, direction = position
 
-      if direction not in DIRECTIONS:
-        raise ValueError(f"Invalid direction, direction should be one of {DIRECTIONS}")
+        if direction not in DIRECTIONS:
+            raise ValueError(
+                f"Invalid direction, direction should be one of {DIRECTIONS}"
+            )
 
-      self.name = name if name else uuid4().hex[:10]
-      self.x, self.y, self.direction = x, y, direction
+        self.name = name if name else uuid4().hex[:10]
+        self.x, self.y, self.direction = x, y, direction
 
+    @property
+    def position(self) -> positionTypeResponse:
+        """Return current rover position.
+
+        Tuple (x, y), direction"""
+        return (self.x, self.y), self.direction
