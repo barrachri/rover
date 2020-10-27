@@ -32,8 +32,9 @@ def test_rover_return_position():
     assert rover.position == ((x, y), direction)
 
 
-def test_rover_send_command():
+@pytest.mark.parametrize("command, new_position", [("FFF", (7, 2)), ("F", (5, 2))])
+def test_rover_send_command(command, new_position):
     x, y, direction = 4, 2, "EAST"
     rover = Rover(position=(x, y, direction))
-    resp = rover.send_command("FFF")
-    assert resp == ((7, 2), "EAST")
+    resp = rover.send_command(command)
+    assert resp == (new_position, "EAST")
