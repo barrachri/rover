@@ -7,7 +7,7 @@ positionTypeResponse = Tuple[Tuple[int, int], str]
 DIRECTIONS = ("NORTH", "EAST", "SOUTH", "WEST")
 
 
-def rbrain(instruction: str, x: int, y: int, direction: str) -> Tuple[int, int, str]:
+def rbrain(command: str, x: int, y: int, direction: str) -> Tuple[int, int, str]:
     logic = {
         "F": {
             "NORTH": (0, 1),
@@ -17,11 +17,17 @@ def rbrain(instruction: str, x: int, y: int, direction: str) -> Tuple[int, int, 
         }
     }
 
-    execution_plan = logic.get(instruction)
-    if execution_plan is None:
-        raise ValueError("Instruction error: `{instruction}` not valid")
+    # the command we receive must be a subset
+    # of the instructions implemented inside logic
+    if (set(command) <= logic.keys()) is False:
+        raise ValueError("Instruction error: `{command}` not valid")
 
-    return x + execution_plan[direction][0], y + execution_plan[direction][1], direction
+    for instruction in command:
+        execution_plan = logic[instruction]
+        x += execution_plan[direction][0]
+        y += execution_plan[direction][1]
+
+    return x, y, direction
 
 
 class Rover:
@@ -49,6 +55,10 @@ class Rover:
         self.name = name if name else uuid4().hex[:10]
         self.x, self.y, self.direction = x, y, direction
 
+        # each rover has a brain
+        # with some built-in logic to move around
+        self.brain = rbrain
+
     @property
     def position(self) -> positionTypeResponse:
         """Return current rover position.
@@ -62,6 +72,5 @@ class Rover:
 
         Return rover's position.
         """
-        for instruction in command:
-            self.x, self.y, _ = rbrain(instruction, self.x, self.y, self.direction)
+        self.x, self.y, _ = self.brain(command, self.x, self.y, self.direction)
         return self.position

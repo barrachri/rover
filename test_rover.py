@@ -1,4 +1,4 @@
-from main import Rover, DIRECTIONS
+from main import Rover, DIRECTIONS, rbrain
 import pytest
 
 
@@ -40,13 +40,34 @@ def test_rover_send_command(command, new_position):
     assert resp == (new_position, "EAST")
 
 
-@pytest.mark.parametrize(
-    "command, last_position",
-    (["FFZ", ((6, 2), "EAST")], ["ZZF", ((4, 2), "EAST")], ["TFT", ((4, 2), "EAST")]),
-)
-def test_rover_invalid_command(command, last_position):
+def test_rover_invalid_command_doesnt_move():
     x, y, direction = 4, 2, "EAST"
     rover = Rover(position=(x, y, direction))
     with pytest.raises(ValueError):
-        rover.send_command(command)
-    assert rover.position == last_position
+        rover.send_command("FTF")
+    assert rover.position == ((x, y), direction)
+
+
+class TestRBrain:
+    @pytest.mark.parametrize(
+        "command",
+        ("FFZ", "ZZF", "TFT", "Z"),
+    )
+    def test_rbrain_invalid_instruction(self, command):
+        x, y, direction = 4, 2, "EAST"
+        with pytest.raises(ValueError):
+            rbrain(command, x, y, direction)
+
+    @pytest.mark.parametrize(
+        "direction, expected_position",
+        (
+            ("NORTH", (0, 1)),
+            ("EAST", (1, 0)),
+            ("SOUTH", (0, -1)),
+            ("WEST", (-1, 0)),
+        ),
+    )
+    def test_rbrain_brain_logic(self, direction, expected_position):
+        x, y = 0, 0
+        new_position = rbrain("F", x, y, direction)
+        assert (*expected_position, direction) == new_position
