@@ -4,6 +4,8 @@ from uuid import uuid4
 positionType = Tuple[int, int, str]
 
 
+DIRECTIONS = ("NORTH", "EAST", "SOUTH", "WEST")
+
 class Rover:
     """A rover power by AI and solar cells.
 
@@ -19,5 +21,11 @@ class Rover:
     """
 
     def __init__(self, position: positionType, name: str = None) -> None:
-        self.name = name if name else uuid4().hex[:10]
-        self.x, self.y, self.direction = position
+      x, y, direction = position
+
+      if direction not in DIRECTIONS:
+        raise ValueError(f"Invalid direction, direction should be one of {DIRECTIONS}")
+
+      self.name = name if name else uuid4().hex[:10]
+      self.x, self.y, self.direction = x, y, direction
+
