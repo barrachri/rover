@@ -19,5 +19,5 @@ class Rover:
     """
 
     def __init__(self, position: positionType, name: str = None) -> None:
-        self.name = name if name else uiud4().hex[:10]
+        self.name = name if name else uuid4().hex[:10]
         self.x, self.y, self.direction = position
