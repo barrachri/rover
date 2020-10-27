@@ -26,7 +26,7 @@ source .venv/bin/activate
 to install the requirements (needed only for dev)
 
 ```
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ```
 
 We use [pre-commit](https://pre-commit.com/), to hook linters on `git commit` command
