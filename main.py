@@ -7,6 +7,16 @@ positionTypeResponse = Tuple[Tuple[int, int], str]
 DIRECTIONS = ("NORTH", "EAST", "SOUTH", "WEST")
 
 
+def rbrain(instruction, x, y, direction):
+    logic = {
+        "NORTH": (0, 1),
+        "EAST": (1, 0),
+        "SOUTH": (0, -1),
+        "WEST": (-1, 0),
+    }
+    return x + logic[direction][0], y + logic[direction][1], direction
+
+
 class Rover:
     """A rover power by AI and solar cells.
 
@@ -38,3 +48,13 @@ class Rover:
 
         Tuple (x, y), direction"""
         return (self.x, self.y), self.direction
+
+    def send_command(self, command: str) -> positionTypeResponse:
+        """
+        Send a command to the rover.
+
+        Return rover's position.
+        """
+        for instruction in command:
+            self.x, self.y, _ = rbrain(instruction, self.x, self.y, self.direction)
+        return self.position

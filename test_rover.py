@@ -30,3 +30,10 @@ def test_rover_return_position():
     x, y, direction = 0, 1, "WEST"
     rover = Rover(position=(x, y, direction))
     assert rover.position == ((x, y), direction)
+
+
+def test_rover_send_command():
+    x, y, direction = 4, 2, "EAST"
+    rover = Rover(position=(x, y, direction))
+    resp = rover.send_command("FFF")
+    assert resp == ((7, 2), "EAST")
