@@ -2,7 +2,6 @@ from typing import Tuple
 from uuid import uuid4
 
 positionType = Tuple[int, int, str]
-positionTypeResponse = Tuple[Tuple[int, int], str]
 
 DIRECTIONS = ("NORTH", "EAST", "SOUTH", "WEST")
 
@@ -13,7 +12,7 @@ def validate_direction(direction: str) -> None:
         raise ValueError(f"Invalid direction, direction should be one of {DIRECTIONS}")
 
 
-def pilot(command: str, x: int, y: int, direction: str) -> Tuple[int, int, str]:
+def pilot(command: str, x: int, y: int, direction: str) -> positionType:
     """
     A flight controller with a specific controlling logic.
 
@@ -76,13 +75,13 @@ class Rover:
         self.pilot = pilot
 
     @property
-    def position(self) -> positionTypeResponse:
+    def position(self) -> positionType:
         """Return current rover position.
 
         Tuple (x, y), direction"""
-        return (self.x, self.y), self.direction
+        return self.x, self.y, self.direction
 
-    def send_command(self, command: str) -> positionTypeResponse:
+    def send_command(self, command: str) -> positionType:
         """
         Send a command to the rover.
 
