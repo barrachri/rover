@@ -7,9 +7,15 @@ positionTypeResponse = Tuple[Tuple[int, int], str]
 DIRECTIONS = ("NORTH", "EAST", "SOUTH", "WEST")
 
 
+def validate_direction(direction: str) -> None:
+    if direction not in DIRECTIONS:
+        raise ValueError(f"Invalid direction, direction should be one of {DIRECTIONS}")
+
+
 def rbrain(command: str, x: int, y: int, direction: str) -> Tuple[int, int, str]:
     logic = {
         "F": {
+            # heading, x, y
             "NORTH": (0, 1),
             "EAST": (1, 0),
             "SOUTH": (0, -1),
@@ -21,6 +27,8 @@ def rbrain(command: str, x: int, y: int, direction: str) -> Tuple[int, int, str]
     # of the instructions implemented inside logic
     if (set(command) <= logic.keys()) is False:
         raise ValueError("Instruction error: `{command}` not valid")
+
+    validate_direction(direction)
 
     for instruction in command:
         execution_plan = logic[instruction]
@@ -47,10 +55,7 @@ class Rover:
     def __init__(self, position: positionType, name: str = None) -> None:
         x, y, direction = position
 
-        if direction not in DIRECTIONS:
-            raise ValueError(
-                f"Invalid direction, direction should be one of {DIRECTIONS}"
-            )
+        validate_direction(direction)
 
         self.name = name if name else uuid4().hex[:10]
         self.x, self.y, self.direction = x, y, direction

@@ -59,6 +59,11 @@ class TestRBrain:
         with pytest.raises(ValueError):
             rbrain(command, x, y, direction)
 
+    def test_rbrain_wrong_not_support_direction(self):
+        x, y, direction = 4, 2, "W"
+        with pytest.raises(ValueError):
+            rbrain("F", x, y, direction)
+
     @pytest.mark.parametrize(
         "direction, expected_position",
         (
