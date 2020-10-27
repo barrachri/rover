@@ -1,5 +1,6 @@
-from main import Rover, DIRECTIONS, rbrain
 import pytest
+
+from main import DIRECTIONS, Rover, rbrain
 
 
 @pytest.mark.parametrize("direction", [*DIRECTIONS])
