@@ -38,3 +38,15 @@ def test_rover_send_command(command, new_position):
     rover = Rover(position=(x, y, direction))
     resp = rover.send_command(command)
     assert resp == (new_position, "EAST")
+
+
+@pytest.mark.parametrize(
+    "command, last_position",
+    (["FFZ", ((6, 2), "EAST")], ["ZZF", ((4, 2), "EAST")], ["TFT", ((4, 2), "EAST")]),
+)
+def test_rover_invalid_command(command, last_position):
+    x, y, direction = 4, 2, "EAST"
+    rover = Rover(position=(x, y, direction))
+    with pytest.raises(ValueError):
+        rover.send_command(command)
+    assert rover.position == last_position

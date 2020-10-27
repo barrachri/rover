@@ -7,14 +7,21 @@ positionTypeResponse = Tuple[Tuple[int, int], str]
 DIRECTIONS = ("NORTH", "EAST", "SOUTH", "WEST")
 
 
-def rbrain(instruction, x, y, direction):
+def rbrain(instruction: str, x: int, y: int, direction: str) -> Tuple[int, int, str]:
     logic = {
-        "NORTH": (0, 1),
-        "EAST": (1, 0),
-        "SOUTH": (0, -1),
-        "WEST": (-1, 0),
+        "F": {
+            "NORTH": (0, 1),
+            "EAST": (1, 0),
+            "SOUTH": (0, -1),
+            "WEST": (-1, 0),
+        }
     }
-    return x + logic[direction][0], y + logic[direction][1], direction
+
+    execution_plan = logic.get(instruction)
+    if execution_plan is None:
+        raise ValueError("Instruction error: `{instruction}` not valid")
+
+    return x + execution_plan[direction][0], y + execution_plan[direction][1], direction
 
 
 class Rover:
@@ -27,7 +34,7 @@ class Rover:
 
     A position is a tuple made with 3 elements, (x, y, direction):
     x, y: position on the map
-    direction: one of the cardinal directions: N, E, S, and W.
+    direction: one of the cardinal directions: NORTH, EAST, SOUTH, and WEST.
 
     """
 
