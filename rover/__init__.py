@@ -76,9 +76,7 @@ class Rover:
 
     @property
     def position(self) -> positionType:
-        """Return current rover position.
-
-        Tuple (x, y), direction"""
+        """Return current position."""
         return self.x, self.y, self.direction
 
     def send_command(self, command: str) -> positionType:
