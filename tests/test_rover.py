@@ -1,6 +1,6 @@
 import pytest
 
-from main import DIRECTIONS, Rover, pilot
+from rover import DIRECTIONS, Rover, pilot
 
 
 @pytest.mark.parametrize("direction", [*DIRECTIONS])
