@@ -1,6 +1,6 @@
 import pytest
 
-from main import DIRECTIONS, Rover, rbrain
+from main import DIRECTIONS, Rover, pilot
 
 
 @pytest.mark.parametrize("direction", [*DIRECTIONS])
@@ -49,7 +49,7 @@ def test_rover_invalid_command_doesnt_move():
     assert rover.position == ((x, y), direction)
 
 
-class TestRBrain:
+class TestPilot:
     @pytest.mark.parametrize(
         "command",
         ("FFZ", "ZZF", "TFT", "Z"),
@@ -57,12 +57,12 @@ class TestRBrain:
     def test_rbrain_invalid_instruction(self, command):
         x, y, direction = 4, 2, "EAST"
         with pytest.raises(ValueError):
-            rbrain(command, x, y, direction)
+            pilot(command, x, y, direction)
 
     def test_rbrain_wrong_not_support_direction(self):
         x, y, direction = 4, 2, "W"
         with pytest.raises(ValueError):
-            rbrain("F", x, y, direction)
+            pilot("F", x, y, direction)
 
     @pytest.mark.parametrize(
         "direction, expected_position",
@@ -75,5 +75,5 @@ class TestRBrain:
     )
     def test_rbrain_brain_logic(self, direction, expected_position):
         x, y = 0, 0
-        new_position = rbrain("F", x, y, direction)
+        new_position = pilot("F", x, y, direction)
         assert (*expected_position, direction) == new_position

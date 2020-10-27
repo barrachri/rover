@@ -8,11 +8,22 @@ DIRECTIONS = ("NORTH", "EAST", "SOUTH", "WEST")
 
 
 def validate_direction(direction: str) -> None:
+    """Validate if direction is supported"""
     if direction not in DIRECTIONS:
         raise ValueError(f"Invalid direction, direction should be one of {DIRECTIONS}")
 
 
-def rbrain(command: str, x: int, y: int, direction: str) -> Tuple[int, int, str]:
+def pilot(command: str, x: int, y: int, direction: str) -> Tuple[int, int, str]:
+    """
+    A flight controller with a specific controlling logic.
+
+    args:
+        command: a single or multiple instructions.
+        x, y: current position
+        direction: heading direction
+
+    return the new position.
+    """
     logic = {
         "F": {
             # heading, x, y
@@ -60,9 +71,9 @@ class Rover:
         self.name = name if name else uuid4().hex[:10]
         self.x, self.y, self.direction = x, y, direction
 
-        # each rover has a brain
+        # each rover has a flight controller
         # with some built-in logic to move around
-        self.brain = rbrain
+        self.pilot = pilot
 
     @property
     def position(self) -> positionTypeResponse:
@@ -77,5 +88,6 @@ class Rover:
 
         Return rover's position.
         """
-        self.x, self.y, _ = self.brain(command, self.x, self.y, self.direction)
+        self.x, self.y, _ = self.pilot(command, self.x, self.y, self.direction)
+        print(f"({self.x},{self.y}) {self.direction}")
         return self.position
