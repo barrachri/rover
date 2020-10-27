@@ -1,3 +1,3 @@
 
 test:
-	pytest --cov .
+	pytest --cov -v

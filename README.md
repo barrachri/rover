@@ -56,5 +56,5 @@ make test
 or run
 
 ```bash
-pytest --cov -v .
+pytest --cov -v
 ```
